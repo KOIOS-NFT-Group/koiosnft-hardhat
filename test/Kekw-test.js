@@ -15,6 +15,7 @@ describe("Kekw", function () {
     await setBaseURI.wait();
 
     console.log(await kekw.getBaseURI());
+
     expect(await kekw.getBaseURI()).to.equal("this_test_URI");
   });
 });
