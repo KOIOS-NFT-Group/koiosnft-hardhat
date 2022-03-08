@@ -1,1 +1,1 @@
-module.exports = ["KEKW", "kek"];
+module.exports = ["TitanTestV2", "TTitanV2"];

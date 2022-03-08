@@ -14,12 +14,23 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Kekw = await hre.ethers.getContractFactory("Kekw");
-  const kekw = await Kekw.deploy("KEKW", "kek");
+  // const TitanFactory = await hre.ethers.getContractFactory("Titan");
+  // const Titan = await TitanFactory.deploy("TitanTestV2", "TTitanV2");
+  // await Titan.deployed();
 
-  await kekw.deployed();
+  // console.log("Titan deployed to:", Titan.address);
 
-  console.log("Kekw deployed to:", kekw.address);
+  const KoiosFactory = await hre.ethers.getContractFactory("Koios");
+  const Koios = await KoiosFactory.deploy(
+    "KoiosV4",
+    "KOIOS",
+    "0xeDE3f3C411F0376dAc26C604b388098AB8E59e89",
+    10
+  );
+
+  await Koios.deployed();
+
+  console.log("Koios deployed to:", Koios.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

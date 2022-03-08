@@ -6,16 +6,21 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 
 contract Kekw is ERC721Enumerable, Ownable {
   using Strings for uint256;
   using SafeMath for uint256;
 
-  uint256 public constant PRICE = 0.001 ether;
+  IERC20 private _token; 
 
+  uint256 public constant PRICE = 0.001 ether;
   string private _baseTokenURI = "";
 
-  event tokenMinted(uint tokenID, address minterAddress);
+  event tokenMinted(uint tokenID, address minterAddress, string tokenType);
+  event doneTransfer(address from, uint256 amount);
+
   mapping (uint256 => string) _tokenURIs;
 
     struct KekwToken {
@@ -24,19 +29,43 @@ contract Kekw is ERC721Enumerable, Ownable {
   }
 
   constructor(string memory _name,
-        string memory _symbol) ERC721(_name, _symbol) {}
+        string memory _symbol, IERC20 token) ERC721(_name, _symbol) {
+            _token = token;
+        }
 
   function _setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyOwner{
     _tokenURIs[tokenId] = _tokenURI;
   }
-
-  function mint() public payable {
+  
+  function transferToken(uint256 amount)public{
+      address from = msg.sender;
+      
+      _token.transferFrom(from, address(this), amount);
+      
+      emit doneTransfer(from, amount);
+  } 
+  
+  function buyHero(uint256 amount) public{
+    require(amount == 500|| amount == 1000  || amount == 2000);
     uint256 supply = totalSupply();
-    require(msg.value >= PRICE);
     uint256 newTotalAmount = supply.add(1);
+    address from = msg.sender; 
+    
+    _token.transferFrom(from, address(this), amount * (10 ** uint256(18)) );
+
     _safeMint(msg.sender, newTotalAmount);
-    emit tokenMinted(newTotalAmount, msg.sender); 
-  }
+    
+    if(amount == 500 ){
+        emit tokenMinted(newTotalAmount, msg.sender, "Hero"); 
+        
+    }else if (amount == 1000){
+        emit tokenMinted(newTotalAmount, msg.sender, "Legend"); 
+        
+    }else if(amount == 2000 ){
+         emit tokenMinted(newTotalAmount, msg.sender, "Titan"); 
+         
+     }
+ }
 
   function getAllTokens() public view returns (KekwToken[] memory){
     uint256 supply = totalSupply();
