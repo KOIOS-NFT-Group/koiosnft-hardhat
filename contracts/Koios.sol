@@ -7,8 +7,6 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-// This is the newest version as of 10-3-2022 REMOVE BEFORE FLIGHT!
-
 contract Koios is ERC721Enumerable, Ownable {
 
     using Strings for uint256;
