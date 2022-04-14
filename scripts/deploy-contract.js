@@ -20,17 +20,20 @@ async function main() {
 
   // console.log("Titan deployed to:", Titan.address);
 
-  const KoiosFactory = await hre.ethers.getContractFactory("Koios");
-  const Koios = await KoiosFactory.deploy(
-    "KoiosV4",
-    "KOIOS",
-    "0xeDE3f3C411F0376dAc26C604b388098AB8E59e89",
-    10
-  );
+  // const KoiosFactory = await hre.ethers.getContractFactory("Koios");
+  // const Koios = await KoiosFactory.deploy(
+  //   "KoiosV4",
+  //   "KOIOS",
+  //   "0xeDE3f3C411F0376dAc26C604b388098AB8E59e89",
+  //   10
+  // );
 
-  await Koios.deployed();
+  const FaucetFactory = await hre.ethers.getContractFactory("Faucet");
+  const Faucet = await FaucetFactory.deploy();
 
-  console.log("Koios deployed to:", Koios.address);
+  await Faucet.deployed();
+
+  console.log("Faucet deployed to:", Faucet.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
